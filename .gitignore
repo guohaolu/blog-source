@@ -1,0 +1,9 @@
+.DS_Store
+node_modules/
+public/
+.deploy*/
+*.log
+.deploy_git*/
+db.json
+_multiconfig.yml
+.cursorrules
