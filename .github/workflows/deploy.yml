@@ -3,26 +3,29 @@ name: Deploy Hexo Blog
 on:
   push:
     branches:
-      - main  # 当main分支收到推送时触发
+      - main  # 当blog-source的main分支收到推送时触发
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # 添加写入权限
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         submodules: true
         fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}  # 明确指定 token
 
     - name: Setup Node.js
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v4
       with:
-        node-version: '16'
+        node-version: '20'
 
     - name: Cache Dependencies
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: ~/.npm
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -34,6 +37,11 @@ jobs:
         npm install -g hexo-cli
         npm install
 
+    - name: Configure Git
+      run: |
+        git config --global user.name "guohaolu"
+        git config --global user.email "1670212878@qq.com"
+
     - name: Build
       run: |
         hexo clean
@@ -42,7 +50,9 @@ jobs:
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        personal_token: ${{ secrets.PERSONAL_TOKEN }}  # 需要创建个人访问令牌
+        external_repository: guohaolu/guohaolu.github.io  # 指定外部仓库
         publish_dir: ./public
-        publish_branch: gh-pages
+        publish_branch: main  # 部署到main分支
         commit_message: ${{ github.event.head_commit.message }}
+        force: true
