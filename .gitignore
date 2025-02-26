@@ -47,6 +47,7 @@ themes/*/.git/
 
 # 本地配置文件
 _config.*.yml
+!_config.next.yml
 !_config.yml
 
 # 其他

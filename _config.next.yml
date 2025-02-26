@@ -1,0 +1,100 @@
+# 主题风格 - Gemini 是双栏布局
+scheme: Gemini
+
+# 侧边栏设置
+sidebar:
+  position: left  # 侧边栏位置：左侧
+  display: always # 始终显示侧边栏
+  padding: 18    # 侧边栏内边距
+  offset: 12     # 侧边栏偏移
+
+# 头像设置
+avatar:
+  url: /images/avatar.jpg  # 设置您的头像
+  rounded: true    # 圆形头像
+  rotated: true    # 鼠标悬停时旋转
+
+# 菜单设置
+menu:
+  home: / || fa fa-home
+  about: /about/ || fa fa-user
+  tags: /tags/ || fa fa-tags
+  categories: /categories/ || fa fa-th
+  archives: /archives/ || fa fa-archive
+
+# 社交链接
+social:
+  GitHub: https://github.com/guohaolu || fab fa-github
+  E-Mail: mailto:1670212878@qq.com || fa fa-envelope
+  #Weibo: https://weibo.com/yourname || fab fa-weibo
+  #Twitter: https://twitter.com/yourname || fab fa-twitter
+
+# 文章设置
+post_meta:
+  item_text: true
+  created_at: true
+  updated_at: true
+  categories: true
+  tags: true
+
+# 侧边栏显示的项目
+sidebar:
+  # 访客信息
+  visitor: true
+  # 社交链接
+  social: true
+  # 文章分类
+  categories: true
+  # 标签云
+  tags: true
+  # 文章目录
+  toc:
+    enable: true
+    number: true
+    wrap: true
+
+# 站点统计
+busuanzi_count:
+  enable: true
+  total_visitors: true
+  total_visitors_icon: fa fa-user
+  total_views: true
+  total_views_icon: fa fa-eye
+  post_views: true
+  post_views_icon: fa fa-eye
+
+# 页面底部设置
+footer:
+  since: 2024  # 网站建立年份
+  icon:
+    name: fa fa-heart
+    animated: true
+    color: "#ff0000"
+  copyright: true
+
+# 返回顶部按钮
+back2top:
+  enable: true
+  sidebar: true
+  scrollpercent: true
+
+# 阅读进度条
+reading_progress:
+  enable: true
+  position: top
+  color: "#37c6c0"
+  height: 3px
+
+# 本地搜索功能
+local_search:
+  enable: true
+  trigger: auto
+  top_n_per_article: 1
+  unescape: false
+  preload: false
+
+# 文章字数统计
+symbols_count_time:
+  separated_meta: true
+  item_text_post: true
+  item_text_total: true 
