@@ -7,12 +7,19 @@ sidebar:
   display: always # 始终显示侧边栏
   padding: 18    # 侧边栏内边距
   offset: 12     # 侧边栏偏移
-
-# 头像设置
-avatar:
-  url: /images/avatar.jpg  # 设置您的头像
-  rounded: true    # 圆形头像
-  rotated: true    # 鼠标悬停时旋转
+  # 访客信息
+  visitor: true
+  # 社交链接
+  social: true
+  # 文章分类
+  categories: true
+  # 标签云
+  tags: true
+  # 文章目录
+  toc:
+    enable: true
+    number: true
+    wrap: true
 
 # 菜单设置
 menu:
@@ -36,22 +43,6 @@ post_meta:
   updated_at: true
   categories: true
   tags: true
-
-# 侧边栏显示的项目
-sidebar:
-  # 访客信息
-  visitor: true
-  # 社交链接
-  social: true
-  # 文章分类
-  categories: true
-  # 标签云
-  tags: true
-  # 文章目录
-  toc:
-    enable: true
-    number: true
-    wrap: true
 
 # 站点统计
 busuanzi_count:
