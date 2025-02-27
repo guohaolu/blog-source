@@ -60,3 +60,12 @@ deploy:
   type: git
   repo: https://github.com/guohaolu/guohaolu.github.io
   branch: main
+
+# 标签和分类
+tag_generator:
+  per_page: 10
+  order_by: -date
+  
+category_generator:
+  per_page: 10
+  order_by: -date
