@@ -9,6 +9,7 @@ timezone: 'Asia/Shanghai'
 
 # URL配置
 url: https://guohaolu.github.io
+root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 
