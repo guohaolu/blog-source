@@ -56,4 +56,6 @@ jobs:
         publish_dir: ./public
         publish_branch: main  # 部署到main分支
         commit_message: ${{ github.event.head_commit.message }}
-        force_orphan: true  # 使用force_orphan替代force
+        force_orphan: true
+        enable_jekyll: false  # 禁用Jekyll处理
+        cname: guohaolu.github.io  # 添加这行
