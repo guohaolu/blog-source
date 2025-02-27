@@ -36,6 +36,7 @@ jobs:
       run: |
         npm install -g hexo-cli
         npm install
+        npm install hexo-generator-tag hexo-generator-category --save  # 添加分类和标签插件
 
     - name: Configure Git
       run: |
