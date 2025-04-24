@@ -1,0 +1,421 @@
+-- auto-generated definition
+create table ods_sale_listing_t
+(
+    id                    Int64 comment '主键ID',
+    listing_code          Nullable(String) comment '商品列表编号',
+    pic_url               Nullable(String) comment '商品图片URL',
+    title                 Nullable(String) comment '商品标题',
+    asin                  Nullable(String) comment '亚马逊标准识别号(ASIN)',
+    msku                  Nullable(String) comment '商家库存管理单位(MSKU)',
+    fnsku                 Nullable(String) comment '亚马逊配送网络库存单位(FNSKU)',
+    sale_status           Nullable(String) comment '销售状态',
+    commodity_status      Nullable(String) comment '商品状态',
+    delivery_channel      Nullable(String) comment '配送渠道',
+    price                 Nullable(Float64) comment '销售价格',
+    currency_code         Nullable(String) comment '货币代码',
+    amazon_delivery_price Nullable(Float64) comment '亚马逊配送价格',
+    b2b_sale_price        Nullable(Float64) comment 'B2B销售价格',
+    b2b_sale_price_remark Nullable(String) comment 'B2B销售价格备注',
+    parent_asin           Nullable(String) comment '父ASIN',
+    listing_time          Nullable(Int64) comment '上架时间(时间戳)',
+    sale_time             Nullable(Int64) comment '销售时间(时间戳)',
+    sale_rank             Nullable(Int64) comment '销售排名',
+    star_rating           Nullable(Float64) comment '星级评分',
+    sum_comment           Nullable(Int64) comment '评论总数',
+    sum_star              Nullable(Int64) comment '总星数',
+    operate_level         Nullable(String) comment '运营等级',
+    operate_status        Nullable(String) comment '运营状态',
+    sale_duty_uids        Nullable(String) comment '销售负责人UID列表(多个用逗号分隔)',
+    add_time              Nullable(String) comment '添加时间(字符串格式)',
+    platform_id           Nullable(Int64) comment '平台ID',
+    store_id              Nullable(Int64) comment '店铺ID',
+    store_name            Nullable(String) comment '店铺名称',
+    market_id             Nullable(Int64) comment '市场ID',
+    market_code           Nullable(String) comment '市场代码',
+    del_flag              Nullable(String) comment '删除标志',
+    create_by             Nullable(String) comment '创建人',
+    update_by             Nullable(String) comment '更新人',
+    create_time           DateTime comment '创建时间',
+    update_time           DateTime comment '更新时间',
+    tenant_id             Int64 comment '租户ID',
+    _version              UInt64 default toUnixTimestamp64Milli(now64()) comment '数据版本号(微秒时间戳)，用于ReplacingMergeTree去重',
+    _is_deleted           UInt8  default 0 comment '逻辑删除标记：0-有效 1-删除'
+)
+    engine = ReplacingMergeTree(_version, _is_deleted)
+        PARTITION BY (tenant_id, toYYYYMM(create_time))
+        ORDER BY (tenant_id, id)
+        SETTINGS index_granularity = 8192
+        COMMENT '销售数据监控表(MSKU级别)-本地物理表' comment '销售数据监控表(MSKU级别)-本地物理表';
+
+-- auto-generated definition
+create table ods_sale_msku_monitor_t
+(
+    id                           Int64 comment '主键ID',
+    platform_id                  Nullable(Int64) comment '平台ID',
+    team_id                      Nullable(Int64) comment '团队ID',
+    team_code                    Nullable(String) comment '团队编码',
+    team_name                    Nullable(String) comment '团队名称',
+    store_id                     Nullable(Int64) comment '店铺ID',
+    store_code                   Nullable(String) comment '店铺编码',
+    store_name                   Nullable(String) comment '店铺名称',
+    market_id                    Nullable(Int64) comment '站点ID',
+    market_code                  Nullable(String) comment '站点编码',
+    market_name                  Nullable(String) comment '站点名称',
+    store_and_market             Nullable(String) comment '店铺站点拼接信息',
+    msku_code                    Nullable(String) comment 'MSKU编码',
+    title                        Nullable(String) comment '商品标题',
+    asin                         Nullable(String) comment 'ASIN',
+    parent_asin                  Nullable(String) comment '父ASIN',
+    sale_duty_uid                Nullable(Int64) comment '销售负责人ID',
+    sale_duty_uid_name           Nullable(String) comment '销售负责人姓名',
+    pic_url                      Nullable(String) comment '商品图片URL',
+    category_id                  Nullable(Int64) comment '产品分类ID',
+    category_name                Nullable(String) comment '产品分类名称',
+    sku_id                       Nullable(Int64) comment 'SKU ID',
+    sku_code                     Nullable(String) comment 'SKU编码',
+    sku_name                     Nullable(String) comment 'SKU名称',
+    sku_type                     Nullable(FixedString(2)) comment 'SKU类型',
+    currency                     Nullable(String) comment '币种',
+    order_num                    Nullable(Int32) comment '订单量',
+    sales                        Nullable(Int32) comment '小时销量',
+    sales_revenue                Nullable(Decimal(40, 4)) comment '销售额',
+    other_income                 Nullable(Decimal(40, 4)) comment '其他收入',
+    return_sale_revenue          Nullable(Decimal(40, 4)) comment '退回销售额',
+    tax_fee                      Nullable(Decimal(40, 4)) comment '税费',
+    platform_fee                 Nullable(Decimal(40, 4)) comment '平台费用',
+    sale_commission              Nullable(Decimal(40, 4)) comment '销售佣金',
+    advertising_expenses         Nullable(Decimal(40, 4)) comment '广告花费',
+    storage_fee                  Nullable(Decimal(40, 4)) comment '仓储费',
+    delivery_fee                 Nullable(Decimal(40, 4)) comment '配送费',
+    promotion_fee                Nullable(Decimal(40, 4)) comment '推广活动费',
+    other_outcome                Nullable(Decimal(40, 4)) comment '其他支出费用',
+    fee_refund                   Nullable(Decimal(40, 4)) comment '费用退款',
+    sale_tax_fee                 Nullable(Decimal(40, 4)) comment '销售税费',
+    refund_tax_fee               Nullable(Decimal(40, 4)) comment '退款税费',
+    product_cost                 Nullable(Decimal(40, 4)) comment '产品成本',
+    purchase_cost                Nullable(Decimal(40, 4)) comment '采购成本',
+    arrive_inventory_cost        Nullable(Decimal(40, 4)) comment '到库成本',
+    outcome                      Nullable(Decimal(40, 4)) comment '支出',
+    gross_profit                 Nullable(Decimal(40, 4)) comment '毛利润',
+    product_platform_online_time Nullable(DateTime) comment '产品平台上线时间',
+    hour_timestamp               Nullable(Int64) comment '小时时间戳(秒级)',
+    hour_time                    Nullable(String) comment '小时时间字符串',
+    date_timestamp               Int64 comment '日期时间戳(秒级)',
+    date_time                    Nullable(String) comment '日期时间字符串',
+    month_date                   Nullable(String) comment '月份字符串',
+    del_flag                     Nullable(FixedString(1)) default '0' comment '删除标志：0-未删除 1-已删除',
+    create_by                    Nullable(String) comment '创建人',
+    update_by                    Nullable(String) comment '更新人',
+    create_time                  Nullable(DateTime) comment '创建时间',
+    update_time                  Nullable(DateTime) comment '更新时间',
+    tenant_id                    Int64 comment '租户ID',
+    _version                     UInt64                   default toUnixTimestamp64Milli(now64()) comment '数据版本号(毫秒时间戳)，用于ReplacingMergeTree去重',
+    _is_deleted                  UInt8                    default 0 comment '逻辑删除标记：0-有效 1-删除'
+)
+    engine = ReplacingMergeTree(_version, _is_deleted)
+        PARTITION BY (tenant_id, toYYYYMM(toDate(date_timestamp / 1000)))
+        ORDER BY (tenant_id, id)
+        SETTINGS index_granularity = 8192
+        COMMENT '销售数据监控表(MSKU级别)-本地物理表' comment '销售数据监控表(MSKU级别)-本地物理表';
+
+CREATE VIEW ewayt_bi.ods_sale_listing_msku_monitor_v
+            (
+             `asin` Nullable(String),
+             `team_id` Nullable(Int64),
+             `msku_code` Nullable(String),
+             `market_id` Nullable(Int64),
+             `platform_id` Nullable(Int64),
+             `team_name` Nullable(String),
+             `store_name` Nullable(String),
+             `store_id` Nullable(Int64),
+             `market_code` Nullable(String),
+             `sale_duty_uid` Nullable(Int64),
+             `pic_url` Nullable(String),
+             `parent_asin` Nullable(String),
+             `sku_id` Nullable(Int64),
+             `sku_code` Nullable(String),
+             `sku_name` Nullable(String),
+             `currency` Nullable(String),
+             `salesSum` Int32,
+             `month_date` Nullable(String),
+             `sales_revenue` Decimal(76, 4),
+             `advertising_expenses` Decimal(76, 4),
+             `date_time` Nullable(String),
+             `create_by` Nullable(String),
+             `update_by` Nullable(String),
+             `create_time` DateTime,
+             `update_time` DateTime,
+             `tenant_id` Int64
+                )
+AS
+SELECT t1.asin,
+       t2.team_id                         AS team_id,
+       t2.msku_code                       AS msku_code,
+       t2.market_id                       AS market_id,
+       t1.platform_id,
+       t2.team_name,
+       t1.store_name,
+       t1.store_id,
+       t1.market_code,
+       t2.sale_duty_uid,
+       t1.pic_url,
+       t1.parent_asin,
+       t2.sku_id,
+       t2.sku_code,
+       t2.sku_name,
+       t2.currency,
+       ifNull(t2.sales, 0)                AS salesSum,
+       t2.month_date,
+       ifNull(t2.sales_revenue, 0)        AS sales_revenue,
+       ifNull(t2.advertising_expenses, 0) AS advertising_expenses,
+       t2.date_time,
+       t1.create_by,
+       t1.update_by,
+       t1.create_time,
+       t1.update_time,
+       t1.tenant_id
+FROM ewayt_bi.ods_sale_listing_t AS t1
+         FINAL
+         LEFT JOIN ewayt_bi.ods_sale_msku_monitor_t AS t2
+    FINAL ON (t1.tenant_id = t2.tenant_id) AND (t1.platform_id = t2.platform_id) AND (t1.store_name = t2.store_name) AND
+             (t1.market_code = t2.market_code) AND (t1.msku = t2.msku_code)
+WHERE (t2.del_flag = '0')
+  AND (t1.del_flag = '0');
+
+CREATE VIEW ewayt_bi.ods_sale_msku_monitor_range_v
+            (
+             `platform_id` Nullable(Int64),
+             `store_id` Nullable(Int64),
+             `store_name` Nullable(String),
+             `market_code` Nullable(String),
+             `team_id` Nullable(Int64),
+             `sale_duty_uid` Nullable(Int64),
+             `month_date` Nullable(String),
+             `hour_time` Nullable(String),
+             `date_time` Nullable(String),
+             `currency` Nullable(String),
+             `sales` Nullable(Int32),
+             `sales_revenue` Nullable(Decimal(40, 4)),
+             `profit` Nullable(Decimal(76, 4)),
+             `outcome` Nullable(Decimal(40, 4)),
+             `advertising_expenses` Nullable(Decimal(40, 4)),
+             `create_by` Nullable(String),
+             `update_by` Nullable(String),
+             `create_time` Nullable(DateTime),
+             `update_time` Nullable(DateTime),
+             `tenant_id` Int64
+                )
+AS
+SELECT platform_id,
+       store_id,
+       store_name,
+       market_code,
+       team_id,
+       sale_duty_uid,
+       month_date,
+       hour_time,
+       date_time,
+       currency,
+       sales,
+       sales_revenue,
+       ((((sales_revenue + other_income) + return_sale_revenue) + tax_fee) + platform_fee) + product_cost AS profit,
+       outcome,
+       advertising_expenses,
+       create_by,
+       update_by,
+       create_time,
+       update_time,
+       tenant_id
+FROM ewayt_bi.ods_sale_msku_monitor_t
+         FINAL
+WHERE del_flag = '0';
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ewayt.erp.report.mapper.OdsSaleMskuMonitorCkMapper">
+
+    <sql id="queryCondition">
+        <if test="query.teamId != null">
+            AND team_id = #{query.teamId}
+        </if>
+        <if test="query.platformId != null">
+            AND platform_id = #{query.platformId}
+        </if>
+        <if test="query.storeName != null">
+            AND store_name =  #{query.storeName}
+        </if>
+        <if test="query.marketCode != null">
+            AND market_code = #{query.marketCode}
+        </if>
+        <if test="query.teamIdList != null and query.teamIdList.size() > 0">
+            AND team_id IN
+            <foreach collection="query.teamIdList" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="query.platformIdList != null and query.platformIdList.size() > 0">
+            AND platform_id IN
+            <foreach collection="query.platformIdList" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="query.storeIdList != null and query.storeIdList.size() > 0">
+            AND store_id IN
+            <foreach collection="query.storeIdList" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="query.marketCodeList != null and query.marketCodeList.size() > 0">
+            AND market_code IN
+            <foreach collection="query.marketCodeList" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="query.saleDutyUidList != null and query.saleDutyUidList.size() > 0">
+            AND sale_duty_uid IN
+            <foreach collection="query.saleDutyUidList" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="query.beginDate != null">
+            AND date_time >= #{query.beginDate}
+        </if>
+        <if test="query.endDate != null">
+            AND date_time <![CDATA[ <= ]]> #{query.endDate}
+        </if>
+    </sql>
+
+    <select id="listMonthlyMetricsByQuery" resultType="com.ewayt.erp.report.pojo.vo.AsinMonitorCardMetricsMonthlyVO">
+        SELECT
+            month_date AS monthDate,
+            any(currency) AS currency,
+            sum(sales) AS sales,
+            sum(sales_revenue) AS salesRevenue,
+            sum(profit) AS profit,
+            sum(outcome) AS outcome,
+            sum(advertising_expenses) AS advertisingExpenses
+        FROM ewayt_bi.ods_sale_msku_monitor_range_v
+        <where>
+            <include refid="queryCondition"/>
+        </where>
+        GROUP BY month_date
+        ORDER BY month_date
+    </select>
+
+    <select id="listDailyMetricsByQuery" resultType="com.ewayt.erp.report.pojo.vo.AsinMonitorCardMetricsDailyVO">
+        SELECT
+            any(month_date)  AS monthDate,
+            parseDateTime(date_time, '%Y-%m-%d') AS dateTime,
+            any(currency) AS currency,
+            sum(sales) AS sales,
+            sum(sales_revenue) AS salesRevenue,
+            sum(profit) AS profit,
+            sum(outcome) AS outcome,
+            sum(advertising_expenses) AS advertisingExpenses
+        FROM ewayt_bi.ods_sale_msku_monitor_range_v
+        <where>
+            <include refid="queryCondition"/>
+        </where>
+        GROUP BY date_time
+        ORDER BY date_time
+    </select>
+
+    <select id="listHourlyMetricsByQuery" resultType="com.ewayt.erp.report.pojo.vo.AsinMonitorCardMetricsHourlyVO">
+        SELECT
+            any(month_date)  AS monthDate,
+            parseDateTime(hour_time, '%Y-%m-%d %H') AS hourTime,
+            any(currency) AS currency,
+            sum(sales) AS sales,
+            sum(sales_revenue) AS salesRevenue,
+            sum(profit) AS profit,
+            sum(outcome) AS outcome,
+            sum(advertising_expenses) AS advertisingExpenses
+        FROM ewayt_bi.ods_sale_msku_monitor_range_v
+        <where>
+            <include refid="queryCondition"/>
+        </where>
+        GROUP BY hour_time
+        ORDER BY hour_time
+    </select>
+
+    <select id="pageAsinByQuery" resultType="com.ewayt.erp.report.pojo.vo.AsinMonitorDataVO" statementType="PREPARED">
+        select
+            platform_id      AS platformId,
+            team_name        AS teamName,
+            store_name       AS storeName,
+            market_code      AS marketCode,
+            sale_duty_uid    AS saleDutyUid,
+            asin,
+            any(pic_url)     AS picUrl,
+            any(market_id)   AS marketId,
+            any(parent_asin) AS parentAsin,
+            any(sku_id)      AS skuId,
+            any(sku_code)    AS skuCode,
+            any(sku_name)    AS skuName,
+            any(currency)    AS currency,
+            argMax(msku_code, salesSum) AS mskuCode,
+            sum(salesSum)       AS sales,
+            sumMap(
+                array(month_date),
+                array(sales_revenue),
+                array(advertising_expenses)
+            )                AS monthlyAggMap
+        FROM ewayt_bi.ods_sale_listing_msku_monitor_v
+        <where>
+            <include refid="queryCondition"/>
+        </where>
+        group by platform_id, team_name, store_name, market_code, sale_duty_uid, asin
+        order by sum(salesSum) desc
+    </select>
+
+    <select id="pageParentAsinByQuery" resultType="com.ewayt.erp.report.pojo.vo.ParentAsinMonitorDetailVO" statementType="PREPARED">
+        select
+            platform_id     AS platformId,
+            store_name      AS storeName,
+            market_code     AS marketCode,
+            parent_asin     AS parentAsin,
+            sum(salesSum)      AS sales
+        FROM ewayt_bi.ods_sale_listing_msku_monitor_v
+        <where>
+            <include refid="queryCondition"/>
+        </where>
+        group by platform_id, store_name, market_code, parent_asin
+        order by sales desc
+    </select>
+
+    <select id="listAsinByQuery" resultType="com.ewayt.erp.report.pojo.vo.AsinMonitorDataVO">
+        select
+            platform_id      AS platformId,
+            team_name        AS teamName,
+            store_name       AS storeName,
+            any(market_id)        AS marketId,
+            market_code      AS marketCode,
+            sale_duty_uid    AS saleDutyUid,
+            asin,
+            any(pic_url)     AS pic_url,
+            any(parent_asin) AS parentAsin,
+            any(sku_id)      AS skuId,
+            any(sku_code)    AS skuCode,
+            any(sku_name)    AS skuName,
+            any(currency)    AS currency,
+            argMax(msku_code, salesSum) AS mskuCode,
+            sum(salesSum)       AS sales,
+            sumMap(
+                array(month_date),
+                array(sales_revenue),
+                array(advertising_expenses)
+            )                AS monthlyAggMap
+        FROM ewayt_bi.ods_sale_listing_msku_monitor_v
+        <where>
+            <include refid="queryCondition"/>
+            <if test="list != null and list.size() > 0">
+                and (platform_id, store_name, market_code, parent_asin) in
+                <foreach collection="list" item="item" open="(" separator="," close=")">
+                    (#{item.platformId}, #{item.storeName}, #{item.marketCode}, #{item.parentAsin})
+                </foreach>
+            </if>
+        </where>
+        group by platform_id, team_name, store_name, market_code, sale_duty_uid, asin
+        order by sum(salesSum) desc
+    </select>
+</mapper>
